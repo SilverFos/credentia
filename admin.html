@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Credentia Admin</title>
+    <style>
+        :root {
+            --bg: #FFF5E1;
+            --bg-2: #FFE5B4;
+            --accent: #FFDAB9;
+            --text: #2b2b2b;
+            --muted: #666666;
+            --white: #ffffff;
+            --success: #2e7d32;
+            --danger: #9a2f2f;
+            --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-xs: 8px;
+            --focus: 0 0 0 3px rgba(255, 218, 185, 0.8);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: linear-gradient(180deg, var(--bg), var(--bg-2) 140%);
+            color: var(--text);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Card & panel styles */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        .panel {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px 24px;
+            background: var(--accent);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--bg-2), var(--accent));
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.2px;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--bg-2);
+            border: none;
+            color: var(--text);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .btn.primary {
+            background: var(--accent);
+        }
+
+        .btn.success {
+            background: #d5f5d7;
+            color: #1b5e20;
+        }
+
+        .btn.danger {
+            background: #f8d7da;
+            color: var(--danger);
+        }
+
+        .btn.icon {
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        /* Inputs */
+        .grid {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(12, 1fr);
+        }
+
+        .col-12 {
+            grid-column: span 12
+        }
+
+        .col-6 {
+            grid-column: span 6
+        }
+
+        .col-4 {
+            grid-column: span 4
+        }
+
+        .col-3 {
+            grid-column: span 3
+        }
+
+        @media (max-width: 900px) {
+
+            .col-6,
+            .col-4,
+            .col-3 {
+                grid-column: span 12
+            }
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--muted);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #f0d7b8;
+            border-radius: var(--radius-xs);
+            background: #fffdf8;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
+            transition: box-shadow .2s ease, border-color .2s ease;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--accent);
+            box-shadow: var(--focus);
+        }
+
+        .helper {
+            font-size: .9rem;
+            color: var(--muted);
+        }
+
+        .link {
+            color: #b05e00;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .link:hover {
+            text-decoration: underline
+        }
+
+        /* Login */
+        .center {
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .login {
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .login .title {
+            font-size: 1.4rem;
+        }
+
+        /* Dashboard sections */
+        .section-title {
+            font-weight: 700;
+            margin: 8px 0 16px;
+            font-size: 1.05rem;
+        }
+
+        .stack {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        /* List */
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .list-item {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border: 1px solid #f3d8b8;
+            border-radius: var(--radius-sm);
+            background: #fffdf8;
+            box-shadow: var(--shadow);
+        }
+
+        .list-item .name {
+            font-weight: 700
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--accent);
+            font-weight: 600;
+            font-size: .9rem;
+        }
+
+        .id-text {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        /* Empty state */
+        .empty {
+            text-align: center;
+            color: var(--muted);
+            padding: 28px;
+            border: 2px dashed #f0d7b8;
+            border-radius: var(--radius);
+            background: #fffaf0;
+        }
+
+        /* Alerts */
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: var(--radius-xs);
+            background: #e7f6e9;
+            color: var(--success);
+            border: 1px solid #cdeccd;
+            box-shadow: var(--shadow);
+            font-weight: 600;
+        }
+
+        .alert.hide {
+            display: none
+        }
+
+        /* Footer note */
+        .note {
+            color: var(--muted);
+            font-size: .9rem
+        }
+
+        /* Subtle transitions */
+        .fade-in {
+            animation: fade .24s ease-out
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN VIEW -->
+    <main id="loginView" class="center">
+        <section class="card login fade-in">
+            <div class="brand" style="margin-bottom:14px">
+                <div class="logo" aria-hidden="true"></div>
+                <div class="title">Credentia Admin Access</div>
+            </div>
+            <p class="helper">Use your admin credentials to continue.</p>
+
+            <form id="loginForm" novalidate>
+                <div class="grid" style="margin-top:12px">
+                    <div class="col-12">
+                        <label for="username">Username</label>
+                        <input id="username" name="username" type="text" placeholder="e.g., admin" required />
+                    </div>
+                    <div class="col-12">
+                        <label for="password">Password</label>
+                        <input id="password" name="password" type="password" placeholder="••••••••" required
+                            minlength="4" />
+                    </div>
+                </div>
+
+                <div class="stack" style="margin-top:16px; align-items:center; justify-content:space-between">
+                    <a href="#" class="link">Forgot Password?</a>
+                    <button type="submit" class="btn primary">Login</button>
+                </div>
+                <p id="loginError" class="helper" style="color: var(--danger); margin-top:10px; display:none">Invalid
+                    credentials. Try again.</p>
+            </form>
+
+            <p class="note" style="margin-top:16px">Demo auth: username “admin”, password “admin”.</p>
+        </section>
+    </main>
+
+    <!-- DASHBOARD VIEW -->
+    <header id="dashHeader" class="header" style="display:none">
+        <div class="brand">
+            <div class="logo" aria-hidden="true"></div>
+            <div class="title">Credentia Admin Panel</div>
+        </div>
+        <div class="stack">
+            <div class="search-wrap">
+                <input id="searchInput" type="text" placeholder="Search by name or ID…" style="min-width:240px" />
+            </div>
+            <button id="logoutBtn" class="btn icon danger" title="Logout">
+                <!-- simple icon -->
+                <span>⎋</span><span>Logout</span>
+            </button>
+        </div>
+    </header>
+
+    <section id="dashboard" class="container" style="display:none">
+        <div class="grid">
+            <!-- Add Student -->
+            <div class="col-12">
+                <div class="panel fade-in">
+                    <div class="section-title">Add new student</div>
+                    <form id="studentForm" novalidate>
+                        <div class="grid">
+                            <div class="col-6">
+                                <label for="fullName">Full name</label>
+                                <input id="fullName" name="fullName" type="text" placeholder="e.g., Aisha Kurian"
+                                    required />
+                            </div>
+                            <div class="col-6">
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" placeholder="aisha@example.com" required />
+                            </div>
+                            <div class="col-6">
+                                <label for="phone">Phone number</label>
+                                <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" required />
+                            </div>
+                            <div class="col-6">
+                                <label for="dob">Date of birth</label>
+                                <input id="dob" name="dob" type="date" required />
+                            </div>
+                            <div class="col-6">
+                                <label for="course">Course / Program</label>
+                                <input id="course" name="course" type="text" placeholder="B.Tech CSE" required />
+                            </div>
+                            <div class="col-6">
+                                <label for="enrollmentId">Enrollment ID</label>
+                                <input id="enrollmentId" name="enrollmentId" type="text" placeholder="ENR-2025-0001"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="stack" style="margin-top:16px; justify-content:flex-end">
+                            <button type="reset" class="btn">Reset</button>
+                            <button type="submit" class="btn primary">Save student</button>
+                        </div>
+                        <div id="successMsg" class="alert hide" style="margin-top:12px">
+                            ✅ Student saved successfully.
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Students List -->
+            <div class="col-12">
+                <div class="panel fade-in">
+                    <div class="section-title">Students</div>
+                    <div id="studentsEmpty" class="empty">No students added yet. Add a student to see them here.</div>
+                    <div id="studentsList" class="list" style="display:none"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Utilities
+        const storageKey = 'credentia_students';
+        const authKey = 'credentia_auth';
+
+        const $ = (id) => document.getElementById(id);
+        const getStudents = () => JSON.parse(localStorage.getItem(storageKey) || '[]');
+        const setStudents = (list) => localStorage.setItem(storageKey, JSON.stringify(list));
+        const isAuthed = () => localStorage.getItem(authKey) === 'true';
+        const setAuthed = (v) => localStorage.setItem(authKey, v ? 'true' : 'false');
+
+        const uuid = () => {
+            // lightweight UUID v4-ish
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        };
+        const fmtPhone = (p) => p.trim();
+
+        // View toggles
+        function showLogin() {
+            $('loginView').style.display = 'flex';
+            $('dashHeader').style.display = 'none';
+            $('dashboard').style.display = 'none';
+        }
+        function showDashboard() {
+            $('loginView').style.display = 'none';
+            $('dashHeader').style.display = 'flex';
+            $('dashboard').style.display = 'block';
+            renderStudents();
+        }
+
+        // Initial route
+        if (isAuthed()) showDashboard(); else showLogin();
+
+        // Login logic
+        $('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const u = $('username').value.trim();
+            const p = $('password').value.trim();
+            if (u === 'admin' && p === 'admin') {
+                setAuthed(true);
+                $('loginError').style.display = 'none';
+                showDashboard();
+            } else {
+                $('loginError').style.display = 'block';
+            }
+        });
+
+        // Logout
+        $('logoutBtn').addEventListener('click', () => {
+            setAuthed(false);
+            showLogin();
+        });
+
+        // Add student
+        $('studentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const student = {
+                id: null, // generated later
+                fullName: $('fullName').value.trim(),
+                email: $('email').value.trim(),
+                phone: fmtPhone($('phone').value),
+                dob: $('dob').value,
+                course: $('course').value.trim(),
+                enrollmentId: $('enrollmentId').value.trim(),
+                createdAt: Date.now()
+            };
+
+            // Basic validation
+            const required = ['fullName', 'email', 'phone', 'dob', 'course', 'enrollmentId'];
+            for (const key of required) {
+                if (!student[key]) {
+                    alert('Please fill all fields.');
+                    return;
+                }
+            }
+
+            const list = getStudents();
+            list.push(student);
+            setStudents(list);
+
+            // UX feedback
+            $('successMsg').classList.remove('hide');
+            setTimeout(() => $('successMsg').classList.add('hide'), 1600);
+
+            // Reset form
+            e.target.reset();
+            renderStudents();
+        });
+
+        // Search/filter
+        $('searchInput').addEventListener('input', renderStudents);
+
+        // Render students
+        function renderStudents() {
+            const list = getStudents();
+            const query = $('searchInput').value.trim().toLowerCase();
+
+            const filtered = query
+                ? list.filter(s =>
+                    (s.fullName || '').toLowerCase().includes(query) ||
+                    (s.id || '').toLowerCase().includes(query)
+                )
+                : list;
+
+            const container = $('studentsList');
+            const empty = $('studentsEmpty');
+
+            if (!filtered.length) {
+                container.style.display = 'none';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+            container.style.display = 'flex';
+            container.innerHTML = '';
+
+            filtered
+                .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+                .forEach((s, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'list-item';
+                    row.innerHTML = `
+            <div class="name">${s.fullName}</div>
+            <div>${s.course}</div>
+            <div class="id-text">${s.enrollmentId}</div>
+            <div class="id-text">${s.id ? `<span class="badge">ID</span> ${s.id}` : '<span class="helper">No ID yet</span>'}</div>
+            <div style="display:flex; gap:8px; justify-content:flex-end">
+              <button class="btn icon primary" data-index="${index}" data-action="generate">
+                <span>🔐</span><span>Generate ID</span>
+              </button>
+            </div>
+          `;
+                    container.appendChild(row);
+                });
+
+            // Attach actions
+            container.querySelectorAll('button[data-action="generate"]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.getAttribute('data-index'), 10);
+                    const current = getStudents();
+                    const student = current[idx];
+
+                    const newId = `${uuid()}-${Date.now().toString(36)}`;
+                    student.id = newId;
+                    setStudents(current);
+                    renderStudents();
+
+                    // Open card in new tab with student info
+                    const url = `student-card.html?name=${encodeURIComponent(student.fullName)}&enrollment=${encodeURIComponent(student.enrollmentId)}&course=${encodeURIComponent(student.course)}&email=${encodeURIComponent(student.email)}`;
+                    window.open(url, '_blank');
+                });
+
+            });
+        }
+
+        // Demo seed (optional)
+        if (!getStudents().length) {
+            setStudents([
+                { id: null, fullName: 'Rohan Mehta', email: 'rohan@example.com', phone: '+91 90000 00001', dob: '2003-05-11', course: 'BBA', enrollmentId: 'ENR-2025-1001', createdAt: Date.now() - 50000 },
+                { id: null, fullName: 'Aisha Kurian', email: 'aisha@example.com', phone: '+91 90000 00002', dob: '2004-09-21', course: 'B.Tech CSE', enrollmentId: 'ENR-2025-1002', createdAt: Date.now() - 40000 },
+            ]);
+        }
+    </script>
+</body>
+
+</html>
