@@ -6,15 +6,16 @@
     <title>Credentia Student Credential</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- THEME & LAYOUT --- */
         :root {
-            --primary-dark: #b05e00; 
+            --primary-dark: #b05e00;
+            --primary-mid: #d67719;
             --accent: #FFDAB9;
             --bg-2: #FFFBF5;
             --white: #ffffff;
             --text: #2b2b2b;
             --muted: #666666;
-            --shadow-light: 0 6px 16px rgba(0, 0, 0, 0.1);
+            --shadow-light: 0 12px 25px rgba(0, 0, 0, 0.15);
+            --shadow-glow: 0 0 20px rgba(176, 94, 0, 0.3);
         }
 
         body {
@@ -23,32 +24,32 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--bg-2) 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #f9f5e8 0%, #ffffff 50%, #fff8f0 100%);
             margin: 0;
             font-family: 'Inter', sans-serif;
             color: var(--text);
         }
-        
-        /* --- CARD DESIGN (Single-sided) --- */
+
         .id-card {
-            width: 320px; 
+            width: 320px;
             height: 480px; /* Reduced height */
             background: var(--white);
             border: 1px solid #e0e0e0;
             border-radius: 18px;
-            box-shadow: var(--shadow-light);
+            box-shadow: var(--shadow-light), var(--shadow-glow);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             position: relative;
             padding: 24px;
+            background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,250,245,0.8) 100%);
         }
 
         /* Logo Strip */
         .logo-strip {
             width: 100%;
             height: 50px; /* Reduced height */
-            background: var(--primary-dark);
+            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-mid) 100%);
             color: var(--white);
             display: flex;
             align-items: center;
@@ -59,6 +60,7 @@
             border-radius: 15px 15px 0 0;
             margin: -24px -24px 24px -24px;
             padding: 0 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .photo {
@@ -70,6 +72,19 @@
             background-size: cover;
             background-position: center;
             border: 4px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        .photo::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            z-index: -1;
         }
 
         .details {
@@ -178,10 +193,9 @@
 
 
     <script>
-        // --- 1. SETUP & PARAMETERS ---
         const $ = (id) => document.getElementById(id);
         const params = new URLSearchParams(window.location.search);
-        
+
         const student = {
             name: params.get('name') || 'Student Name',
             enrollment: params.get('enrollment') || 'ENR-XXXX',
@@ -191,17 +205,15 @@
             photoUrl: params.get('photo'),
         };
 
-        // --- 2. RENDER STATIC DETAILS ---
         $('name').textContent = student.name;
         $('enrollment').textContent = 'Enrollment ID: ' + student.enrollment;
         $('course').textContent = 'Course: ' + student.course;
         $('email').textContent = 'Email: ' + student.email;
-        $('vcIdDisplay').textContent = student.vcId; // Display the core VC ID
+        $('vcIdDisplay').textContent = student.vcId;
 
         if (student.photoUrl) {
             $('photo').style.backgroundImage = `url(${student.photoUrl})`;
         } else {
-             // Placeholder image for demo if no URL is provided
             $('photo').style.backgroundImage = `url('https://via.placeholder.com/100?text=Photo')`;
         }
     </script>

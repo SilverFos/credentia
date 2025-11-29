@@ -1,12 +1,9 @@
 <?php
-session_start(); // Start the session for authentication
+session_start();
 
-// --- CONFIGURATION ---
-$ADMIN_PASSWORD = "admin"; // Hardcoded default password
+$ADMIN_PASSWORD = "admin";
 
-// --- AUTHENTICATION LOGIC ---
-
-// 1. Handle Login Attempt
+// Handle Login Attempt
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'login') {
     $enteredPassword = $_POST['password'] ?? '';
     
@@ -51,20 +48,43 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
             }
             body {
                 font-family: 'Inter', sans-serif;
-                background: var(--bg-2);
+                background: linear-gradient(135deg, var(--primary-dark) 0%, var(--bg-2) 100%);
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 min-height: 100vh;
                 margin: 0;
+                position: relative;
+            }
+            body::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="25" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="25" cy="75" r="1" fill="rgba(255,255,255,0.03)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.06)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+                opacity: 0.5;
+                pointer-events: none;
             }
             .login-card {
-                background: #ffffff;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 padding: 40px;
-                border-radius: 12px;
-                box-shadow: var(--shadow);
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
                 width: 350px;
                 text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                position: relative;
+                z-index: 1;
+                transform: translateY(0);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .login-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
             }
             .login-card h2 {
                 color: var(--primary-dark);
@@ -122,22 +142,14 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
     </body>
     </html>
     <?php
-    exit(); // IMPORTANT: Stop execution of the rest of the file
+    exit();
 }
-// 4. --- END OF AUTHENTICATION BLOCK ---
 
-// If the script reaches this point, the user is authenticated, and the rest of the Admin Console code runs.
-
-// Set up SQLite Database Connection (The database logic starts here)
 try {
-    // This creates the 'credentials.sqlite' file if it doesn't exist
     $db = new PDO('sqlite:credentials.sqlite');
-    // ... (REST OF DB SETUP AND CRUD LOGIC IS UNCHANGED) ...
-// -----------------------------------------------------------------------
 
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Create the students table if it doesn't exist
     $db->exec("CREATE TABLE IF NOT EXISTS students (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         full_name TEXT NOT NULL,
@@ -152,18 +164,10 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
-// --- HELPER FUNCTION ---
-/**
- * Generates a mock Verifiable Credential ID.
- * Format: VC-8-digit-hex
- */
 function generateVCID() {
     return 'VC-' . strtoupper(bin2hex(random_bytes(4)));
 }
 
-// --- CRUD OPERATIONS ---
-
-// 1. ADD/ISSUE CREDENTIAL
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'add_student') {
     $fullName = trim($_POST['full_name']);
     $enrollmentId = trim($_POST['enrollment_id']);
@@ -229,9 +233,8 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* --- CSS VARIABLES & RESET --- */
         :root {
-            --primary-dark: #b05e00; 
+            --primary-dark: #b05e00;
             --primary-light: #FFDAB9;
             --accent: #FFDAB9;
             --danger: #d9534f;
@@ -257,7 +260,6 @@ try {
             line-height: 1.6;
         }
 
-        /* --- LAYOUT & HEADER --- */
         .container {
             max-width: 1100px;
             margin: 40px auto;
@@ -265,23 +267,46 @@ try {
         }
 
         .header {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #8a4a00 100%);
             color: var(--bg-1);
-            padding: 20px 30px;
+            padding: 24px 30px;
             border-radius: 12px 12px 0 0;
-            box-shadow: var(--shadow);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 20px;
         }
 
         .header h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        
-        /* --- FORM STYLES --- */
+
+        .header h1 i {
+            font-size: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header h1 i {
+                font-size: 2rem;
+            }
+        }
+
         .card {
             background: var(--bg-1);
             padding: 30px;
@@ -334,7 +359,7 @@ try {
             gap: 5px;
             text-decoration: none;
         }
-        
+
         .btn.primary {
             background: var(--primary-dark);
             color: var(--bg-1);
@@ -349,13 +374,28 @@ try {
             background: var(--danger);
             color: var(--bg-1);
         }
-        
+
         .btn.danger:hover {
             background: #c9302c;
             transform: translateY(-1px);
         }
 
-        /* --- ALERT MESSAGES --- */
+        .btn.secondary {
+            background: var(--muted);
+            color: var(--bg-1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .btn.secondary:hover {
+            background: #555;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
         .alert {
             padding: 15px;
             margin-bottom: 20px;
@@ -365,20 +405,19 @@ try {
             align-items: center;
             gap: 10px;
         }
-        
+
         .alert.success {
             background: #dff0d8;
             color: #3c763d;
             border: 1px solid #d6e9c6;
         }
-        
+
         .alert.error {
             background: #f2dede;
             color: #a94442;
             border: 1px solid #ebccd1;
         }
 
-        /* --- STUDENT LIST --- */
         h2 {
             font-size: 1.5rem;
             font-weight: 700;
@@ -401,8 +440,9 @@ try {
             border: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             font-size: 0.95rem;
+            position: relative;
         }
         
         .student-info {
@@ -412,11 +452,12 @@ try {
             gap: 15px;
             align-items: center;
         }
-        
+
         .student-info span {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            text-align: left;
         }
         
         .student-info .vc-id {
@@ -519,17 +560,22 @@ try {
                             </div>
                             
                             <div class="flex-end">
-                                <a href="student-card.php?name=<?php echo urlencode($student['full_name']); ?>&enrollment=<?php echo urlencode($student['enrollment_id']); ?>&course=<?php echo urlencode($student['course']); ?>&email=<?php echo urlencode($student['email']); ?>&vc_id=<?php echo urlencode($student['vc_id']); ?>"
-                                   target="_blank"
-                                   class="btn primary" title="View Digital Credential" style="padding: 6px 10px; font-size: 0.9rem;">
-                                    <i class="fas fa-id-card"></i> Card
-                                </a>
-                                
-                                <a href="index.php?action=delete&id=<?php echo $student['id']; ?>" 
-                                   onclick="return confirm('Revoke credential for <?php echo addslashes($student['full_name']); ?>?')"
-                                   class="btn danger" title="Revoke Credential" style="padding: 6px 10px; font-size: 0.9rem;">
-                                    <i class="fas fa-trash-alt"></i> Revoke
-                                </a>
+                                <button class="btn secondary" onclick="toggleOptions(this)" title="Options">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="actions" style="display: none;">
+                                    <a href="student-card.php?name=<?php echo urlencode($student['full_name']); ?>&enrollment=<?php echo urlencode($student['enrollment_id']); ?>&course=<?php echo urlencode($student['course']); ?>&email=<?php echo urlencode($student['email']); ?>&vc_id=<?php echo urlencode($student['vc_id']); ?>"
+                                       target="_blank"
+                                       class="btn primary" title="View Digital Credential" style="padding: 6px 10px; font-size: 0.9rem;">
+                                        <i class="fas fa-id-card"></i> Card
+                                    </a>
+
+                                    <a href="index.php?action=delete&id=<?php echo $student['id']; ?>"
+                                       onclick="return confirm('Revoke credential for <?php echo addslashes($student['full_name']); ?>?')"
+                                       class="btn danger" title="Revoke Credential" style="padding: 6px 10px; font-size: 0.9rem;">
+                                        <i class="fas fa-trash-alt"></i> Revoke
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -542,5 +588,17 @@ try {
         </p>
 
     </div>
+
+    <script>
+        function toggleOptions(btn) {
+            const item = btn.closest('.student-item');
+            const actions = item.querySelector('.actions');
+            if (actions.style.display === 'none') {
+                actions.style.display = 'flex';
+            } else {
+                actions.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
