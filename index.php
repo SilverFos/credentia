@@ -40,11 +40,11 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             :root {
-                --primary-dark: #b05e00; 
-                --accent: #FFDAB9;
-                --bg-2: #FFFBF5;
-                --text: #2b2b2b;
-                --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                --primary-dark: #1e40af;
+                --accent: #dbeafe;
+                --bg-2: #f8fafc;
+                --text: #0f172a;
+                --shadow: 0 4px 12px rgba(30, 64, 175, 0.08);
             }
             body {
                 font-family: 'Inter', sans-serif;
@@ -113,7 +113,7 @@ if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
                 transition: background-color 0.2s;
             }
             .btn:hover {
-                background: #945100;
+                background: #1e3a8a;
             }
             .error {
                 color: #d9534f;
@@ -234,17 +234,17 @@ try {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary-dark: #b05e00;
-            --primary-light: #FFDAB9;
-            --accent: #FFDAB9;
-            --danger: #d9534f;
-            --success: #5cb85c;
+            --primary-dark: #1e40af;
+            --primary-light: #dbeafe;
+            --accent: #dbeafe;
+            --danger: #ef4444;
+            --success: #10b981;
             --bg-1: #ffffff;
-            --bg-2: #FFFBF5;
-            --text: #2b2b2b;
-            --muted: #666666;
-            --border: #e0e0e0;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --bg-2: #f8fafc;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #cbd5e1;
+            --shadow: 0 4px 12px rgba(30, 64, 175, 0.08);
         }
 
         * {
@@ -267,7 +267,7 @@ try {
         }
 
         .header {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, #8a4a00 100%);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1e3a8a 100%);
             color: var(--bg-1);
             padding: 24px 30px;
             border-radius: 12px 12px 0 0;
@@ -366,7 +366,7 @@ try {
         }
 
         .btn.primary:hover {
-            background: #945100;
+            background: #1e3a8a;
             transform: translateY(-1px);
         }
 
@@ -462,7 +462,7 @@ try {
         
         .student-info .vc-id {
             font-weight: 700;
-            color: #2e7d32; /* Success green for VC ID */
+            color: #2563eb; /* Blue for verifiable credential ID */
         }
 
         .student-info .issue-date {
@@ -491,7 +491,7 @@ try {
         
         <div class="header">
             <h1><i class="fas fa-id-badge"></i> Credentia VC Admin Panel</h1>
-            <a href="index.php?action=logout" class="btn danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <a href="index.php?action=logout" class="btn danger" title="Logout"><i class="fas fa-power-off"></i></a>
         </div>
 
         <?php

@@ -7,15 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-dark: #b05e00;
-            --primary-mid: #d67719;
-            --accent: #FFDAB9;
-            --bg-2: #FFFBF5;
+            --primary-dark: #1e40af;
+            --primary-mid: #3b82f6;
+            --accent: #dbeafe;
+            --bg-2: #f8fafc;
             --white: #ffffff;
-            --text: #2b2b2b;
-            --muted: #666666;
-            --shadow-light: 0 12px 25px rgba(0, 0, 0, 0.15);
-            --shadow-glow: 0 0 20px rgba(176, 94, 0, 0.3);
+            --text: #0f172a;
+            --muted: #64748b;
+            --shadow-light: 0 12px 25px rgba(30, 64, 175, 0.15);
+            --shadow-glow: 0 0 20px rgba(30, 64, 175, 0.3);
         }
 
         body {
@@ -24,7 +24,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #f9f5e8 0%, #ffffff 50%, #fff8f0 100%);
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 50%, #dbeafe 100%);
             margin: 0;
             font-family: 'Inter', sans-serif;
             color: var(--text);
@@ -42,7 +42,7 @@
             overflow: hidden;
             position: relative;
             padding: 24px;
-            background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,250,245,0.8) 100%);
+            background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(248,250,252,0.8) 100%);
         }
 
         /* Logo Strip */
@@ -129,7 +129,7 @@
             font-family: monospace;
             font-weight: bold;
             font-size: 1.1rem;
-            color: #2e7d32; /* Success green for ID */
+            color: #2563eb; /* Blue for verifiable credential ID */
         }
         
         .vc-helper {
@@ -155,7 +155,7 @@
         }
         
         .action-btn:hover {
-            background: #f8c99e;
+            background: #bfdbfe;
             transform: translateY(-1px);
         }
         
