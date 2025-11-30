@@ -490,7 +490,7 @@ try {
     <div class="container">
         
         <div class="header">
-            <h1><i class="fas fa-id-badge"></i> Credentia VC Admin Panel</h1>
+            <h1><i class="fas fa-id-badge"></i> Credentia Admin Panel</h1>
             <a href="index.php?action=logout" class="btn danger" title="Logout"><i class="fas fa-power-off"></i></a>
         </div>
 
