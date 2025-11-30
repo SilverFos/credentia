@@ -584,7 +584,7 @@ try {
         </div>
         
         <p style="text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 40px;">
-            Credentia VC Prototype - Developed by Your Team
+            Credentia Prototype - Developed by B21
         </p>
 
     </div>
